@@ -1,7 +1,8 @@
 import blogModel from '../models/blogmodel.js';
 import userModel from '../models/usermodel.js';
-import notificationModel from '../models/notificationModel.js';
+// import notificationModel from '../models/notificationModel.js';
 // notificationModel
+import notificationModel from '../models/notificationModel.js';
 import commentModel from '../models/comment.js';
 import { nanoid } from 'nanoid';
 
