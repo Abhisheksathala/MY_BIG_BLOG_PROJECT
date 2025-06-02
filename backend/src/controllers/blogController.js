@@ -101,7 +101,7 @@ export const getAllBlogs = async (req, res) => {
     return res.status(200).json({ message: 'Blogs retrieved successfully', success: true, blogs });
   } catch (error) {
     return res.status(500).json({
-      message: `${error.message}` || 'Something went wrong while retrieving the blogs',
+      message: error.message || 'Something went wrong while retrieving the blogs',
       success: false,
     });
   }
