@@ -25,12 +25,19 @@ const CommentCard = ({ index, leftVal, commentData }) => {
     blogstate: {
       blogs: {
         comments: { results: commentArr },
+        activity,
+        activity: { total_parent_comments },
       },
     },
     setBlogstate,
     blogstate,
+
     setTotalparentcommentsLoaded,
   } = useContext(Blogcontext);
+
+  // const { total_parent_comments } = activity;
+
+  // console.log('activity', activity);
 
   const {
     userAuth: { access_token },
@@ -52,10 +59,10 @@ const CommentCard = ({ index, leftVal, commentData }) => {
       while (commentArr[startingpoint].childrenLevel >= commentData.childrenLevel) {
         startingpoint--;
       }
-      return startingpoint;
     } catch (error) {
-      startingpoint = 0 || undefined;
+      startingpoint = undefined;
     }
+    return startingpoint;
   };
 
   const removeCommentsCards = (startingPoint, isDelete = false) => {
@@ -83,11 +90,11 @@ const CommentCard = ({ index, leftVal, commentData }) => {
     }
     setBlogstate({
       ...blogstate,
-      comments: { ...blogstate.comments, results: commentArr },
+      comments: { resulte: commentArr },
       activity: {
-        ...blogstate.activity,
+        ...activity,
         total_parent_comments:
-          blogstate.activity.total_parent_comments - (commentData.childrenLevel === 0 ? 1 : 0),
+          total_parent_comments - (commentData.childrenLevel == 0 && isDelete ? 1 : 0),
       },
     });
   };
@@ -159,14 +166,15 @@ const CommentCard = ({ index, leftVal, commentData }) => {
       const data = response.data;
 
       if (data.success) {
+        e.target.removeAttribute('disabled');
         removeCommentsCards(index + 1, true);
         toast.success(data.message);
       }
 
-      e.target.removeAttribute('disabled'); // ✅ fixed here
+      e.target.removeAttribute('disabled');
     } catch (error) {
       console.log(error);
-      e.target.removeAttribute('disabled'); // enable again even on error
+      e.target.removeAttribute('disabled');
       toast.error('Failed to delete comment');
     }
   };

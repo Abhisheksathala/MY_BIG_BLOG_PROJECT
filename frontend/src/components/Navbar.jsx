@@ -31,7 +31,8 @@ const Navbar = () => {
   };
 
   const handleSearchSubmit = (e) => {
-    if (e.keyCode == 187 && searchQuery.trim().length) {
+    console.log('searchQuery', e);
+    if (e.keyCode == 187 || (e.keyCode == 13 && searchQuery.trim().length)) {
       e.preventDefault();
       navigate(`/search/${searchQuery.trim()}`);
     }
@@ -95,7 +96,10 @@ const Navbar = () => {
               onKeyDown={handleSearchSubmit}
             />
 
-            <FaSearchengin className="absolute right-4 top-1/2 -translate-y-1/2 text-2xl text-gray-500" />
+            <FaSearchengin
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-2xl text-gray-500"
+              onClick={handleSearchSubmit}
+            />
           </div>
         </div>
 

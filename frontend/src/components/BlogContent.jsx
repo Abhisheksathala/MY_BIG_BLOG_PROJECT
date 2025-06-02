@@ -38,6 +38,66 @@ const List = ({ style, items }) => {
   );
 };
 
+const Code = ({ code }) => {
+  return (
+    <pre className="my-6">
+      <code className="bg-gray-100 rounded-md p-4 block">{code}</code>
+    </pre>
+  );
+};
+
+const Video = ({ url }) => {
+  return (
+    <div className="my-6">
+      <iframe
+        width="100%"
+        height="315"
+        src={url}
+        title="YouTube video player"
+        frameBorder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      ></iframe>
+    </div>
+  );
+};
+
+const Embed = ({ url }) => {
+  return (
+    <div className="my-6">
+      <iframe
+        src={url}
+        width="100%"
+        height="315"
+        frameBorder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      ></iframe>
+    </div>
+  );
+};
+// link
+
+const Link = ({ url, caption }) => {
+  return (
+    <div className="my-6 flex items-center gap-3">
+      Link:
+      <a
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-white hover:text-blue-600 hover:underline line-clamp-1 border bg-blue-300 rounded-lg p-3"
+      >
+        {caption || url}
+      </a>
+    </div>
+  );
+};
+
+const Separator = () => {
+  return <hr className="my-6 border-gray-200" />;
+};
+
 const BlogContent = ({ block }) => {
   const { type, data } = block;
 
@@ -111,6 +171,18 @@ const BlogContent = ({ block }) => {
 
   if (type === 'list') {
     return <List style={data.style} items={data.items} />;
+  }
+
+  if (type === 'code') {
+    return <Code code={data.code} />;
+  }
+
+  if (type === 'embed') {
+    return <Video url={data.url} />;
+  }
+
+  if (type === 'link') {
+    return <Link url={data.link} caption={data.meta?.title || data.link} />;
   }
 
   return <div className="text-red-500 my-4 font-semibold">Unsupported block type: {type}</div>;

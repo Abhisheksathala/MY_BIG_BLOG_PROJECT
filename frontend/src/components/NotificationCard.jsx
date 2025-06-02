@@ -40,7 +40,8 @@ const NotificationCard = ({ data, index, notificationState }) => {
     notifications,
   } = notificationState;
 
-  console.log('datacommentsssssss', data);
+  console.log('data', data);
+  console.log('data_commentsssssss', data?.comment?._id);
 
   const [isReplying, setIsReplying] = React.useState(false);
 
@@ -68,9 +69,9 @@ const NotificationCard = ({ data, index, notificationState }) => {
       const data = response.data;
       if (data.success) {
         if (type === 'comment') {
-          notificationState.resulte.splice(index, 1);
+          resulte.splice(index, 1);
         } else {
-          delete resulte[index].replya[comment_id];
+          delete resulte[index].reply[comment_id];
         }
       }
       target.removeAttribute('disabled');
@@ -145,7 +146,7 @@ const NotificationCard = ({ data, index, notificationState }) => {
 
             <button
               onClick={(e) => {
-                handleDelete(comment._id, 'comment', e.target);
+                handleDelete(data?.comment?._id, 'comment', e.target);
               }}
               className="underline hover:text-black cursor-pointer"
             >

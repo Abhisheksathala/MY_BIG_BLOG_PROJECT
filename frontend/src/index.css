@@ -36,6 +36,36 @@
   color: var(--primary) !important;
 }
 
+/* You can add this in your main CSS file or Tailwind layer */
+
+.ce-block h1 {
+  font-size: 2.25rem;
+  font-weight: bold;
+}
+
+.ce-block h2 {
+  font-size: 1.75rem;
+  font-weight: bold;
+}
+
+.ce-block h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.ce-block blockquote {
+  border-left: 4px solid #ccc;
+  padding-left: 1rem;
+  font-style: italic;
+  color: #555;
+}
+
+.ce-block p {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #333;
+}
+
 /*@layer components {*/
 /*    * {*/
 /*        @apply m-0 p-0 box-border text-base duration-100 outline outline-2 outline-[rgba(128,0,128,0.3)];*/

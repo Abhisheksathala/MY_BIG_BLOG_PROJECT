@@ -95,6 +95,8 @@ const BlogeditorComp = () => {
       textediterstate
         .save()
         .then((data) => {
+          console.log('Saved Editor Data:', data);
+
           if (data.blocks && data.blocks.length) {
             console.log('Saved Editor Data:', data);
 

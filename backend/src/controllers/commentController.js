@@ -162,6 +162,13 @@ export const deletecomment = async (req, res) => {
   const user_id = req.user;
   const { _id } = req.body;
 
+  console.log('USER ID:', user_id);
+  console.log('COMMENT ID:', _id);
+
+  if (!_id) {
+    return res.status(400).json({ message: 'Comment ID is required', success: false });
+  }
+
   if (!user_id) {
     return res.status(401).json({ message: 'User not authenticated', success: false });
   }
@@ -178,7 +185,7 @@ export const deletecomment = async (req, res) => {
     }
 
     await notificationModel.findByIdAndDelete({ comment: _id });
-    await notificationModel.findByIdAndDelete({ reply: _id });
+    await notificationModel.findByIdAndUpdate({ reply: _id }, { $unset: { reply: 1 } });
     await blogModel
       .findOneAndUpdate(
         { _id: comment.blogModel },
