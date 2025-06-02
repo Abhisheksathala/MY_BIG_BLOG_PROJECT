@@ -1,4 +1,4 @@
-import notificationModel from '../models/notificationmodel.js';
+import notificationModel from '../models/notificationModel.js';
 import { ObjectId } from 'mongodb';
 export const newnotification = async (req, res) => {
   let user_Id = req.user;
