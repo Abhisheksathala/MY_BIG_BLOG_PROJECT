@@ -5,7 +5,7 @@ import {
   changepassword,
   updateprofileimage,
   updateprofile,
-} from '../controllers/userController.js'; // ✅ Fixed
+} from '../controllers/userController.js'; 
 import authMiddleware from '../middelwares/verifyjwt.js';
 
 const userRoute = express.Router();

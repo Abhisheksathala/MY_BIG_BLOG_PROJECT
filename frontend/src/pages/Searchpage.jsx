@@ -23,7 +23,7 @@ const Searchpage = () => {
   const seacrhBlog = async ({ page = 1, create_new_array = false }) => {
     try {
       const response = await axios.post(
-        `${baseUrl}/api/v1/blog/get-blogs-by-tag-advance`, // ✅ Corrected endpoint here
+        `${baseUrl}/api/v1/blog/get-blogs-by-tag-advance`, 
         {
           query,
           page,
@@ -39,7 +39,7 @@ const Searchpage = () => {
           state: getBlogState,
           data: data.blogs,
           page: page,
-          countRoute: '/api/v1/blog/get-blogs-by-tag-advance', // ✅ Good as is
+          countRoute: '/api/v1/blog/get-blogs-by-tag-advance', 
           data_to_send: { query },
           create_new_array,
         });
