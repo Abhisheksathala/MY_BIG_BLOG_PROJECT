@@ -24,7 +24,7 @@ const App = () => {
   const { userAuth, setUserAuth } = useContext(UserContext);
 
   useEffect(() => {
-    let userSession = lookInSession('user')?.access_token || '{}';
+    let userSession = lookInSession('user')?.access_token || '';
 
     userSession.access_token
       ? setUserAuth(userSession)

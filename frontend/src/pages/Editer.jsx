@@ -21,32 +21,65 @@ const Editer = () => {
   let { blog_id } = useParams();
   console.log('blog_id', blog_id);
 
-  useEffect(async () => {
+  // useEffect(async () => {
+  //   if (!blog_id) {
+  //     return setLoadingstate(false);
+  //   }
+
+  //   try {
+  //     const respons = await axios.post(`${baseUrl}/api/v1/blog/get-blog`, {
+  //       blog_id,
+  //       draft: true,
+  //       mode: 'edit',
+  //     });
+
+  //     const data = respons.data;
+
+  //     if (data.success) {
+  //       console.log('data edit', data);
+  //       setBlogState(data.blogs);
+  //       setLoadingstate(false);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //     setLoadingstate(false);
+  //     throw error;
+  //   }
+  // }, []);
+
+  
+  
+  useEffect(() => {
+  const fetchBlog = async () => {
     if (!blog_id) {
-      return setLoadingstate(false);
+      setLoadingstate(false);
+      return;
     }
 
     try {
-      const respons = await axios.post(`${baseUrl}/api/v1/blog/get-blog`, {
+      const response = await axios.post(`${baseUrl}/api/v1/blog/get-blog`, {
         blog_id,
         draft: true,
-        mode: 'edit',
+        mode: "edit",
       });
 
-      const data = respons.data;
+      const data = response.data;
 
       if (data.success) {
-        console.log('data edit', data);
+        console.log("data edit", data);
         setBlogState(data.blogs);
-        setLoadingstate(false);
       }
     } catch (error) {
       console.log(error);
+    } finally {
       setLoadingstate(false);
-      throw error;
     }
-  }, []);
+  };
 
+  fetchBlog();
+}, [blog_id]);
+
+  
   const { editorstore } = useContext(editorContext);
 
   return (

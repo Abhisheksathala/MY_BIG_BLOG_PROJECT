@@ -1,11 +1,16 @@
-import React, { useContext, useState } from 'react';
-import { Blogcontext } from '../context/Blogcontext';
-import { UserContext } from '../context/Usercontext';
-import toast from 'react-hot-toast';
-import axios from 'axios';
-import { baseUrl } from '../App';
+import React, { useContext, useState } from "react";
+import { Blogcontext } from "../context/Blogcontext";
+import { UserContext } from "../context/Usercontext";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { baseUrl } from "../App";
 
-const CommentField = ({ action, index = undefined, replyingTo = undefined, setReplying }) => {
+const CommentField = ({
+  action,
+  index = undefined,
+  replyingTo = undefined,
+  setReplying,
+}) => {
   const {
     commentstate,
     setCommentstate,
@@ -23,7 +28,7 @@ const CommentField = ({ action, index = undefined, replyingTo = undefined, setRe
     activity,
   } = blogstate.blogs;
 
-  console.log('blog_author', blog_author);
+  console.log("blog_author", blog_author);
 
   let {
     userAuth: { access_token },
@@ -35,7 +40,7 @@ const CommentField = ({ action, index = undefined, replyingTo = undefined, setRe
     userAuth,
   } = useContext(UserContext);
 
-  console.log('fullname', blogstate.blogs);
+  console.log("fullname", blogstate.blogs);
   // console.log(' blogstate?.blogs?.comment', commentsArr);
 
   const onchangehandeler = (e) => {
@@ -44,10 +49,10 @@ const CommentField = ({ action, index = undefined, replyingTo = undefined, setRe
 
   const handlecomment = async () => {
     if (!access_token) {
-      return toast.error('Please login to comment');
+      return toast.error("Please login to comment");
     }
     if (!commentstate.length) {
-      return toast.error('Comment cannot be empty 😅');
+      return toast.error("Comment cannot be empty 😅");
     }
 
     try {
@@ -61,7 +66,7 @@ const CommentField = ({ action, index = undefined, replyingTo = undefined, setRe
         },
         {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: `Bearer ${access_token}`,
           },
         },
@@ -70,7 +75,7 @@ const CommentField = ({ action, index = undefined, replyingTo = undefined, setRe
 
       if (data?.success) {
         console.log(data);
-        setCommentstate('');
+        setCommentstate("");
         data.commented_by = {
           personal_info: {
             username,
@@ -107,12 +112,15 @@ const CommentField = ({ action, index = undefined, replyingTo = undefined, setRe
             activity: {
               ...prevState.blogs.activity,
               total_comments: prevState.blogs.activity.total_comments + 1,
-              total_parent_comments: prevState.blogs.activity.total_parent_comments + 1,
+              total_parent_comments:
+                prevState.blogs.activity.total_parent_comments + 1,
             },
           },
         }));
 
-        setTotalparentcommentsLoaded((preVal) => preVal + parentcommentIncrementval);
+        setTotalparentcommentsLoaded(
+          (preVal) => preVal + parentcommentIncrementval,
+        );
       }
     } catch (error) {
       console.log(error);

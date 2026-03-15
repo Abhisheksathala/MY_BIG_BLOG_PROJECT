@@ -1,65 +1,78 @@
-import React, { useState, useEffect } from 'react';
-import { useContext } from 'react';
-import { Link } from 'react-router-dom';
-import AnimationWarper from '../commone/AnimationWarper';
-import logo from '../assets/logo.png';
-import bannerlogo from '../assets/blog banner.png';
-import toast from 'react-hot-toast';
-import { editorContext } from '../context/Editorcontext';
-import EditorJS from '@editorjs/editorjs';
-import { Toolscomp } from './Toolscomp';
-import { Uploade } from '../commone/Uploade';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { baseUrl } from '../App';
-import { UserContext } from '../context/Usercontext';
+import React, { useState, useEffect } from "react";
+import { useContext } from "react";
+import { Link } from "react-router-dom";
+import AnimationWarper from "../commone/AnimationWarper";
+import logo from "../assets/logo.png";
+import bannerlogo from "../assets/blog banner.png";
+import toast from "react-hot-toast";
+import { editorContext } from "../context/Editorcontext";
+import EditorJS from "@editorjs/editorjs";
+import { Toolscomp } from "./Toolscomp";
+import { Uploade } from "../commone/Uploade";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { baseUrl } from "../App";
+import { UserContext } from "../context/Usercontext";
 
 const BlogeditorComp = () => {
   const [Imagebanner, setImageBanner] = useState(null);
 
-  const { blogState, setBlogState, setEditerstore, textediterstate, setTextediterstate } =
-    useContext(editorContext);
+  const {
+    blogState,
+    setBlogState,
+    setEditerstore,
+    textediterstate,
+    setTextediterstate,
+  } = useContext(editorContext);
   const { userAuth } = useContext(UserContext);
 
-  console.log('==', blogState, '==');
+  console.log("==", blogState, "==");
 
   const Naviget = useNavigate();
 
   // useeffect
   // Array.isArray(blogState.content) ? blogState.content[0] : blogState.content
   useEffect(() => {
-    setTextediterstate(
-      new EditorJS({
-        holder: 'texteditor',
-        data: Array.isArray(blogState.content) ? blogState.content[0] : blogState.content,
-        tools: Toolscomp,
-        placeholder: 'Start writing an awesome story...',
-      }),
-    );
+    const editor = new EditorJS({
+      holder: "texteditor",
+      data: Array.isArray(blogState.content)
+        ? blogState.content[0]
+        : blogState.content,
+      tools: Toolscomp,
+      placeholder: "Start writing an awesome story...",
+    });
+
+    setTextediterstate(editor);
+
+    return () => {
+      if (editor && editor.destroy) {
+        editor.destroy();
+      }
+    };
   }, []);
 
   const handlebannerUpload = (file) => {
     if (!file) {
-      toast.error('Please select a file');
+      toast.error("Please select a file");
       return;
     }
     if (file.size > 5 * 1024 * 1024) {
-      toast.error('File size is too large');
+      toast.error("File size is too large");
     }
 
     if (file) {
       Uploade(file).then((url) => {
         if (url) {
-          toast.success('File uploaded successfully 🎉');
+          toast.success("File uploaded successfully 🎉");
           setImageBanner(url);
           setBlogState({ ...blogState, banner: url });
         } else {
-          toast.error('Upload failed.');
+          toast.error("Upload failed.");
         }
       });
     }
 
-    toast.success('File uploaded successfully 🎉');
+    toast.success("File uploaded successfully 🎉");
     console.log(file);
   };
 
@@ -67,13 +80,13 @@ const BlogeditorComp = () => {
     // console.log(keydown);
     if (keydown.keyCode === 13) {
       keydown.preventDefault();
-      console.log('Enter key pressed');
+      console.log("Enter key pressed");
     }
   };
 
   const handletitleChange = (e) => {
     let input = e.target;
-    input.style.height = 'auto';
+    input.style.height = "auto";
     input.style.height = `${input.scrollHeight}px`;
     setBlogState({ ...blogState, title: e.target.value });
   };
@@ -83,11 +96,11 @@ const BlogeditorComp = () => {
 
     // Validate form inputs
     if (!blogState.title) {
-      toast.error('Please upload a title ');
+      toast.error("Please upload a title ");
       return;
     }
     if (!blogState.banner) {
-      toast.error('Please upload a banner image');
+      toast.error("Please upload a banner image");
       return;
     }
 
@@ -95,10 +108,10 @@ const BlogeditorComp = () => {
       textediterstate
         .save()
         .then((data) => {
-          console.log('Saved Editor Data:', data);
+          console.log("Saved Editor Data:", data);
 
           if (data.blocks && data.blocks.length) {
-            console.log('Saved Editor Data:', data);
+            console.log("Saved Editor Data:", data);
 
             const updatedBlog = {
               ...blogState,
@@ -106,28 +119,28 @@ const BlogeditorComp = () => {
             };
             setBlogState(updatedBlog);
             //console log the updated data
-            console.log('updatedBlog', updatedBlog);
+            console.log("updatedBlog", updatedBlog);
 
-            toast.success('Blog published successfully 🎉');
-            setEditerstore('publish');
+            toast.success("Blog published successfully 🎉");
+            setEditerstore("publish");
           }
         })
         .catch((err) => {
-          console.error('Error while saving text editor data:', err);
-          toast.error('Error while saving text editor data');
+          console.error("Error while saving text editor data:", err);
+          toast.error("Error while saving text editor data");
         });
     } else {
-      toast.error('Editor is not ready yet!');
+      toast.error("Editor is not ready yet!");
     }
   };
 
   const handleDraft = async (e) => {
     e.preventDefault();
     // setEditerstore('draft');
-    if (e.target.classList.contains('disable')) return;
+    if (e.target.classList.contains("disable")) return;
 
     if (!blogState.title.length) {
-      toast.error('Please upload a title');
+      toast.error("Please upload a title");
       return;
     }
     // if (!blogState.des.length || blogState.des.length > charLimit) {
@@ -141,8 +154,8 @@ const BlogeditorComp = () => {
     //   return;
     // }
 
-    e.target.classList.add('disable');
-    const loadingToast = toast.loading('saving draft blog... 👍');
+    e.target.classList.add("disable");
+    const loadingToast = toast.loading("saving draft blog... 👍");
 
     const obj = {
       title: blogState.title,
@@ -154,41 +167,47 @@ const BlogeditorComp = () => {
     };
 
     try {
-      const response = await axios.post(`${baseUrl}/api/v1/blog/create-blog`, obj, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${userAuth.access_token}`,
+      const response = await axios.post(
+        `${baseUrl}/api/v1/blog/create-blog`,
+        obj,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userAuth.access_token}`,
+          },
         },
-      });
+      );
 
       const data = response?.data || {};
 
       if (data?.success) {
         toast.dismiss(loadingToast);
-        toast.success('saved as draft 🎉');
-        e.target.classList.remove('disable');
+        toast.success("saved as draft 🎉");
+        e.target.classList.remove("disable");
         setTimeout(() => {
-          Naviget('/dashboard/blogs?tab=draft');
+          Naviget("/dashboard/blogs?tab=draft");
         }, 500);
       }
     } catch (error) {
       console.error(error);
-      toast.error(error?.response?.data?.message || 'Something went wrong!');
+      toast.error(error?.response?.data?.message || "Something went wrong!");
       toast.dismiss(loadingToast);
-      e.target.classList.remove('disable');
+      e.target.classList.remove("disable");
     }
   };
 
   return (
     <>
       <nav className="z-10 sticky flex items-center gap-12 w-full px-[5vw] py-5 h-[80px] border-b border-gray-300 bg-white justify-between">
-        <Link to={'/'}>
+        <Link to={"/"}>
           <img src={logo} alt="Logo" className="flex-none w-10" />
         </Link>
         <p className="max-md:hidden text-black line-clamp-1 w-full font-semibold">
           {blogState && blogState.title ? (
             <span>
-              {blogState.title.length > 25 ? blogState.title.slice(0, 25) + '...' : blogState.title}
+              {blogState.title.length > 25
+                ? blogState.title.slice(0, 25) + "..."
+                : blogState.title}
             </span>
           ) : (
             <span>untitled</span>
@@ -242,7 +261,7 @@ const BlogeditorComp = () => {
               value={blogState.title}
               onKeyDown={handleonKey}
               onChange={handletitleChange}
-              placeholder={'Blog Title'}
+              placeholder={"Blog Title"}
               className="text-4xl font-medium w-full h-20 py-5 outline-none resize-none placeholder:opacity-40 placeholder:text-black"
               name="title"
               id="title"
