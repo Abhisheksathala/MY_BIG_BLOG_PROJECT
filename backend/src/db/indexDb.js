@@ -6,19 +6,18 @@ if (!URI) {
 }
 
 
-const ConnectDb = async (req, res) => {
+const ConnectDb = async () => {
   try {
     const connectToDb = await mongoose.connect(URI)
     if (!connectToDb) {
       console.log("Error connecting to database")
-      res.status(500).json({ message: "Error connecting to database" });
       process.exit(1)
     } else {
-      console.log("Connected to database" + connectToDb.connection.readyState + " " + connectToDb.connection.host)
+      console.log("Connected to database " + connectToDb.connection.readyState + " " + connectToDb.connection.host)
     }
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error connecting to database" });
+    console.error("MongoDB Connection Error:", error);
+    process.exit(1);
   }
 }
 

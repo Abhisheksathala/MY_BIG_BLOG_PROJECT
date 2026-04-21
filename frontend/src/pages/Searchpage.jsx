@@ -137,7 +137,9 @@ const Searchpage = () => {
             ) : (
               <Nodatamessage message="Data is not there" />
             )}
-            <Loadmoredata state={getBlogState} featchdatafun={seacrhBlog} />
+            {getBlogState !== null && getBlogState.resulte?.length < getBlogState.totalDocs && (
+              <Loadmoredata state={getBlogState} featchdatafun={seacrhBlog} />
+            )}
           </>
           <>
             <UserCardwraper />

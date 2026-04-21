@@ -16,6 +16,7 @@ import {
   userWrittenblogs,
   userwrittenblogcount,
   deleteblog,
+  updateBlog,
 } from "../controllers/blogController.js";
 
 const blogRoute = express.Router();
@@ -38,5 +39,6 @@ blogRoute.post(
   userwrittenblogcount,
 );
 blogRoute.post("/delete-blog", authMiddleware, deleteblog);
+blogRoute.post("/update-blog", authMiddleware, updateBlog);
 
 export default blogRoute;

@@ -556,3 +556,79 @@ export const deleteblog = async (req, res) => {
     });
   }
 };
+
+export const updateBlog = async (req, res) => {
+  try {
+    const authorId = req.user;
+    const { blog_id, title, banner, content, tags, des, draft = false } = req.body;
+
+    if (!blog_id) {
+      return res.status(400).json({ message: 'blog_id is required for updating', success: false });
+    }
+
+    if (!draft) {
+      // Validation
+      if (!title?.length) {
+        return res.status(403).json({ message: 'Title is required', success: false });
+      }
+      if (!banner?.length) {
+        return res.status(403).json({ message: 'Banner is required', success: false });
+      }
+      if (!des?.length || des.length > 200) {
+        return res.status(403).json({
+          message: 'Description is required and should be less than 200 characters',
+          success: false,
+        });
+      }
+      if (!content?.length) {
+        return res.status(403).json({ message: 'Content is required', success: false });
+      }
+      if (!tags?.length) {
+        return res.status(403).json({ message: 'Tags are required', success: false });
+      }
+    }
+
+    const normalizedTags = tags.map((t) => t.toLowerCase());
+
+    const existingBlog = await blogModel.findOne({ blog_id });
+
+    if (!existingBlog) {
+      return res.status(404).json({ message: 'Blog not found', success: false });
+    }
+
+    if (existingBlog.author.toString() !== authorId.toString()) {
+      return res.status(403).json({ message: 'Not authorized to edit this blog', success: false });
+    }
+
+    let incrementVal = 0;
+    if (existingBlog.draft && !draft) {
+      incrementVal = 1;
+    }
+
+    const updatedBlog = await blogModel.findOneAndUpdate(
+      { blog_id },
+      { title, banner, content, tags: normalizedTags, des, draft: Boolean(draft) },
+      { new: true }
+    );
+
+    if (incrementVal > 0) {
+      await userModel.findOneAndUpdate(
+        { _id: authorId },
+        { $inc: { 'account_info.total_posts': incrementVal } }
+      );
+    }
+
+    return res.status(200).json({
+      message: 'Blog updated successfully',
+      success: true,
+      blog: updatedBlog,
+      id: updatedBlog.blog_id,
+    });
+  } catch (error) {
+    console.error('Error updating blog:', error);
+    return res.status(500).json({
+      message: 'Something went wrong while updating the blog',
+      success: false,
+    });
+  }
+};

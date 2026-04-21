@@ -12,14 +12,15 @@ const NotificationCard = ({ data, index, notificationState }) => {
     comment,
     reply,
     createdAt,
-    replied_on_comments,
-    user,
-    user: {
-      personal_info: { profile_img, fullname, username },
-    },
-    blog: { _id, blog_id, title },
+    replied_on_comment: replied_on_comments,
+    user = {},
+    blog = {},
     _id: notification_id,
-  } = data;
+  } = data || {};
+
+  const { personal_info = {} } = user;
+  const { profile_img = '', fullname = '', username = '' } = personal_info;
+  const { _id, blog_id = '', title = '' } = blog;
 
   const {
     userAuth: {
@@ -164,7 +165,7 @@ const NotificationCard = ({ data, index, notificationState }) => {
             _id={_id}
             blog_author={user}
             index={index}
-            replyingTo={comment._id}
+            replyingTo={comment?._id}
             setIsReplying={setIsReplying}
             notification_id={notification_id}
             notificationData={notificationState}
@@ -198,7 +199,7 @@ const NotificationCard = ({ data, index, notificationState }) => {
           <p className="text-gray-300 text-sm sm:text-base leading-relaxed">{reply.comment}</p>
           <button
             onClick={(e) => {
-              handleDelete(comment._id, 'replay', e.target);
+              handleDelete(comment?._id, 'replay', e.target);
             }}
             className="underline hover:text-black cursor-pointer ml-14 mt-2"
           >

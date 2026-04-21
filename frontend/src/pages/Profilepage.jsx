@@ -53,6 +53,7 @@ const Profilepage = () => {
     personal_info: { fullname, username: profile_username, profile_img, bio },
     account_info: { total_posts, total_reads },
     joinedAt,
+    createdAt,
   } = profilestate;
 
   const fetchuserprofile = async () => {
@@ -165,7 +166,7 @@ const Profilepage = () => {
               className="max-md:hidden"
               bio={bio}
               social_links={profilestate.social_links}
-              joinedAt={joinedAt}
+              joinedAt={createdAt || joinedAt}
             />
           </div>
           <div className="max-md:mt-12 w-full ">
@@ -198,7 +199,7 @@ const Profilepage = () => {
                     className=""
                     bio={bio}
                     social_links={profilestate.social_links}
-                    joinedAt={joinedAt}
+                    joinedAt={createdAt || joinedAt}
                   />
                 </>
               </Inpagenavigation>

@@ -165,10 +165,12 @@ const Homepage = () => {
               ) : (
                 <Nodatamessage message="Data is not there" />
               )}
-              <Loadmoredata
-                state={getBlogState}
-                featchdatafun={pagestate === 'home' ? featchBlogs : featchBlogsByCategory}
-              />
+              {getBlogState !== null && getBlogState.resulte?.length < getBlogState.totalDocs && (
+                <Loadmoredata
+                  state={getBlogState}
+                  featchdatafun={pagestate === 'home' ? featchBlogs : featchBlogsByCategory}
+                />
+              )}
             </>
             <>
               {treandingBlogstate.length === 0 || treandingBlogstate === null ? (

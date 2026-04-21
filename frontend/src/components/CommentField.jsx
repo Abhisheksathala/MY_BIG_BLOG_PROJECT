@@ -30,15 +30,11 @@ const CommentField = ({
 
   console.log("blog_author", blog_author);
 
-  let {
-    userAuth: { access_token },
-    userAuth: {
-      user: {
-        personal_info: { username, fullname, profile_img },
-      },
-    },
-    userAuth,
-  } = useContext(UserContext);
+  const { userAuth } = useContext(UserContext);
+  const access_token = userAuth?.access_token;
+  const username = userAuth?.user?.personal_info?.username;
+  const fullname = userAuth?.user?.personal_info?.fullname;
+  const profile_img = userAuth?.user?.personal_info?.profile_img;
 
   console.log("fullname", blogstate.blogs);
   // console.log(' blogstate?.blogs?.comment', commentsArr);

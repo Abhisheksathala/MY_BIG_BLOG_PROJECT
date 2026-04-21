@@ -52,8 +52,8 @@ export const postnotifications = async (req, res) => {
       .populate('user', 'personal_info.fullname personal_info.username personal_info.profile_img')
       .populate('comment', 'comment')
       .populate('reply', 'comment')
-      .sort({ createdAt: -1 })
-      .select('createdAt type seen reply');
+      .populate('replied_on_comment', 'comment')
+      .sort({ createdAt: -1 });
 
     if (!findnotification.length) {
       return res.status(404).json({

@@ -100,11 +100,13 @@ const Notificationpage = () => {
           ) : (
             <Nodatamessage message={'no notifications found'} />
           )}
-          <Loadmoredata
-            state={notifications}
-            featchdatafun={featchnotifications}
-            additionalparams={{ deletedDocCount: notifications.deletedDocCount }}
-          />
+          {notifications.resulte.length < notifications.totalDocs && (
+            <Loadmoredata
+              state={notifications}
+              featchdatafun={featchnotifications}
+              additionalparams={{ deletedDocCount: notifications.deletedDocCount || 0 }}
+            />
+          )}
         </div>
       )}
     </div>

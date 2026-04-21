@@ -110,16 +110,15 @@ const Navbar = () => {
           >
             <FaSearchengin className="text-2xl text-gray-600" />
           </button>
-          <Link
-            to={'/editor'}
-            className="hidden md:flex gap-3 text-gray-600 hover:text-black hover:bg-gray-300 p-3 px-4 opacity-75 items-center"
-          >
-            <RiFileEditLine />
-            <p>Write</p>
-          </Link>
-
           {access_token ? (
             <>
+              <Link
+                to={'/editor'}
+                className="hidden md:flex gap-3 text-gray-600 hover:text-black hover:bg-gray-300 p-3 px-4 opacity-75 items-center"
+              >
+                <RiFileEditLine />
+                <p>Write</p>
+              </Link>
               <Link to={`/dashboard/notifications`}>
                 <button
                   className={`w-12 h-12 rounded-full bg-gray-300 relative hover:bg-black/10 cursor-pointer flex items-center justify-center`}

@@ -171,11 +171,13 @@ const ManageBlogs = () => {
           ) : (
             <Nodatamessage message={'No blogs found'} />
           )}
-          <Loadmoredata
-            state={blogs}
-            featchdatafun={getblogs}
-            additionalparams={{ draft: false, deletedDocCount: blogs.deletedDocCount }}
-          />
+          {blogs !== null && blogs.resulte?.length < blogs.totalDocs && (
+            <Loadmoredata
+              state={blogs}
+              featchdatafun={getblogs}
+              additionalparams={{ draft: false, deletedDocCount: blogs.deletedDocCount || 0 }}
+            />
+          )}
         </>
         <>
           {drafts.length === 0 ? (
@@ -191,11 +193,13 @@ const ManageBlogs = () => {
           ) : (
             <Nodatamessage message={'No blogs found'} />
           )}
-          <Loadmoredata
-            state={drafts}
-            featchdatafun={getblogs}
-            additionalparams={{ draft: true, deletedDocCount: drafts.deletedDocCount }}
-          />
+          {drafts !== null && drafts.resulte?.length < drafts.totalDocs && (
+            <Loadmoredata
+              state={drafts}
+              featchdatafun={getblogs}
+              additionalparams={{ draft: true, deletedDocCount: drafts.deletedDocCount || 0 }}
+            />
+          )}
         </>
       </Inpagenavigation>
     </div>
